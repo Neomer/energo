@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/xmlimport">
+        <file>images/start.png</file>
+        <file>images/exit.png</file>
+        <file>images/tray.png</file>
+    </qresource>
+</RCC>

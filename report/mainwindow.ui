@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>896</width>
+    <height>680</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Energo - Отчеты</string>
+  </property>
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>896</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="mnuSaveAs"/>
+    <addaction name="separator"/>
+    <addaction name="actPrint"/>
+    <addaction name="actPrintPreview"/>
+    <addaction name="separator"/>
+    <addaction name="mnuExit"/>
+   </widget>
+   <widget class="QMenu" name="mnuReports">
+    <property name="title">
+     <string>Отчеты</string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="mnuReports"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftToolBarArea|Qt::TopToolBarArea</set>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <action name="mnuExit">
+   <property name="icon">
+    <iconset resource="../conf/resources.qrc">
+     <normaloff>:/icons/images/exit.png</normaloff>:/icons/images/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="icon">
+    <iconset resource="../conf/resources.qrc">
+     <normaloff>:/icons/images/export.png</normaloff>:/icons/images/export.png</iconset>
+   </property>
+   <property name="text">
+    <string>Экспорт...</string>
+   </property>
+  </action>
+  <action name="mnuSaveAs">
+   <property name="icon">
+    <iconset resource="../conf/resources.qrc">
+     <normaloff>:/icons/images/export.png</normaloff>:/icons/images/export.png</iconset>
+   </property>
+   <property name="text">
+    <string>Сохранить как...</string>
+   </property>
+  </action>
+  <action name="mnuCheckData">
+   <property name="text">
+    <string>Полнота данных</string>
+   </property>
+  </action>
+  <action name="actPrint">
+   <property name="text">
+    <string>Печать...</string>
+   </property>
+  </action>
+  <action name="actPrintPreview">
+   <property name="text">
+    <string>Предварительный просмотр...</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="../conf/resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>mnuExit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>447</x>
+     <y>339</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

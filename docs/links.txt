@@ -1,0 +1,3 @@
+Команды AT-модемов - http://tehm.info/modem_AT_command
+Библиотеки для СOM-порта - http://www.linux.org.ru/forum/general/5849569
+команты Siemens TC35 - http://www.entels.ru/index.php?view=items&cid=6%3Aentek&id=77%3A--gsm-----&pop=1&tmpl=component&option=com_quickfaq&Itemid=248

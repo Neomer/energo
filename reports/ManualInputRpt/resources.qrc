@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/manualinput">
+        <file>images/database-save.png</file>
+        <file>images/refresh.png</file>
+        <file>images/server.png</file>
+        <file>images/channel.png</file>
+        <file>images/counter.png</file>
+        <file>images/feeder.png</file>
+        <file>images/gtp.png</file>
+        <file>images/object.png</file>
+    </qresource>
+</RCC>

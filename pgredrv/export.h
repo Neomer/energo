@@ -1,0 +1,12 @@
+#ifndef PGRESQLDRV_EXPORT_H
+#define PGRESQLDRV_EXPORT_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(PGRESQLDRV_LIBRARY)
+#  define PGRESQLDRV_SHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define PGRESQLDRV_SHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // EXPORT_H

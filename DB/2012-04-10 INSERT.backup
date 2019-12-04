@@ -1,0 +1,80 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.0
+-- Dumped by pg_dump version 9.1.0
+-- Started on 2012-04-10 15:01:15
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 1977 (class 0 OID 0)
+-- Dependencies: 173
+-- Name: connection_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('connection_type_id_seq', 1, true);
+
+
+--
+-- TOC entry 1978 (class 0 OID 0)
+-- Dependencies: 165
+-- Name: counter_type_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"counter_type_ID_seq"', 6, true);
+
+
+--
+-- TOC entry 1974 (class 0 OID 41062)
+-- Dependencies: 182
+-- Data for Name: channel_names; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO channel_names (name, index) VALUES ('(А-) Акт. отдача', 2);
+INSERT INTO channel_names (name, index) VALUES ('(А+) Акт. прием', 1);
+INSERT INTO channel_names (name, index) VALUES ('(Р-) Реакт. отдача', 4);
+INSERT INTO channel_names (name, index) VALUES ('(Р+) Реакт. прием', 3);
+
+
+--
+-- TOC entry 1973 (class 0 OID 16438)
+-- Dependencies: 174
+-- Data for Name: connection_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO connection_type (id, name) VALUES (1, 'Прямое подключение');
+INSERT INTO connection_type (id, name) VALUES (2, 'GSM-канал');
+INSERT INTO connection_type (id, name) VALUES (3, 'Интернет канал');
+
+
+--
+-- TOC entry 1972 (class 0 OID 16402)
+-- Dependencies: 166
+-- Data for Name: counter_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO counter_type (id, name, module) VALUES (1, 'СЭТ-4ТМ', 'set4tmplugin.dll');
+INSERT INTO counter_type (id, name, module) VALUES (2, 'ПСЧ-4ТМ', 'set4tmplugin.dll');
+INSERT INTO counter_type (id, name, module) VALUES (3, 'Сикон C10 вер.2', 'siconC10v2.dll');
+INSERT INTO counter_type (id, name, module) VALUES (4, 'Меркурий 230', 'merc230.dll');
+INSERT INTO counter_type (id, name, module) VALUES (5, 'ЦЭ6850(М)', 'ce6850.dll');
+INSERT INTO counter_type (id, name, module) VALUES (6, 'БД Energo', 'energodb.dll');
+INSERT INTO counter_type (id, name, module) VALUES (7, 'БД Альфа ЦЕНТР', 'acdrv.dll');
+INSERT INTO counter_type (id, name, module) VALUES (8, 'Сервер передачи данных Energo', 'datasrvdrv.dll');
+INSERT INTO counter_type (id, name, module) VALUES (9, 'БД Пирамида', 'pmddrv.dll');
+
+
+-- Completed on 2012-04-10 15:01:16
+
+--
+-- PostgreSQL database dump complete
+--
+

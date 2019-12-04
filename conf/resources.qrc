@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>conf.ico</file>
+        <file>images/counter.png</file>
+        <file>images/exit.png</file>
+        <file>images/export.png</file>
+        <file>images/import.png</file>
+        <file>images/server.png</file>
+        <file>images/feeder.png</file>
+        <file>images/object.png</file>
+        <file>images/gtp.png</file>
+        <file>images/find.png</file>
+        <file>images/counter_innactive.png</file>
+        <file>images/tu.png</file>
+        <file>images/irkick.png</file>
+        <file>images/schedule.png</file>
+        <file>images/channel.png</file>
+        <file>images/balans.png</file>
+        <file>images/forward.png</file>
+        <file>images/chpositive.png</file>
+        <file>images/deselect.png</file>
+        <file>images/chnegative.png</file>
+        <file>images/select_negative.png</file>
+        <file>images/select_positive.png</file>
+        <file>images/calendar.png</file>
+        <file>images/building.png</file>
+        <file>images/dp.png</file>
+        <file>images/user-suit.png</file>
+        <file>images/tag-green.png</file>
+        <file>images/appointment-new-2.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,1668 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.0
+-- Dumped by pg_dump version 9.1.0
+-- Started on 2012-04-10 14:58:07
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 2060 (class 1262 OID 16384)
+-- Name: energo; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE energo WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Russian_Russia.1251' LC_CTYPE = 'Russian_Russia.1251';
+
+
+ALTER DATABASE energo OWNER TO postgres;
+
+\connect energo
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 202 (class 3079 OID 11638)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2062 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 214 (class 1255 OID 32870)
+-- Dependencies: 5
+-- Name: to_dt(date, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION to_dt(date, integer) RETURNS timestamp without time zone
+    LANGUAGE sql IMMUTABLE
+    AS $_$select cast($1 as timestamp) + cast(cast($2 * 1800 as varchar) || ' seconds' as interval);$_$;
+
+
+ALTER FUNCTION public.to_dt(date, integer) OWNER TO postgres;
+
+--
+-- TOC entry 223 (class 1255 OID 49355)
+-- Dependencies: 5
+-- Name: to_dt(date, integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION to_dt(date, integer, integer) RETURNS timestamp without time zone
+    LANGUAGE sql
+    AS $_$select cast($1 as timestamp) + cast(cast($2 * $3 * 60 as varchar) || ' seconds' as interval);$_$;
+
+
+ALTER FUNCTION public.to_dt(date, integer, integer) OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1255 OID 49262)
+-- Dependencies: 603 5
+-- Name: trg_removeChannel(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "trg_removeChannel"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$begin
+delete from channel c where c.counter=OLD.id;
+return OLD;
+end;$$;
+
+
+ALTER FUNCTION public."trg_removeChannel"() OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1255 OID 49264)
+-- Dependencies: 603 5
+-- Name: trg_removeCounter(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "trg_removeCounter"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$begin
+	delete from counter c where c.feeder=OLD.id;
+	return OLD;
+end;$$;
+
+
+ALTER FUNCTION public."trg_removeCounter"() OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1255 OID 49268)
+-- Dependencies: 603 5
+-- Name: trg_removeDataByChannel(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "trg_removeDataByChannel"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$begin
+	delete from data d where d.channel = OLD.id;
+	return OLD;
+end;$$;
+
+
+ALTER FUNCTION public."trg_removeDataByChannel"() OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1255 OID 49347)
+-- Dependencies: 5 603
+-- Name: trg_removeDeliveryPoint(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "trg_removeDeliveryPoint"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$begin
+	delete from deliverypoint mc where mc.dpg=OLD.id;
+	return OLD;
+end;$$;
+
+
+ALTER FUNCTION public."trg_removeDeliveryPoint"() OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1255 OID 49260)
+-- Dependencies: 603 5
+-- Name: trg_removeFeeder(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "trg_removeFeeder"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$begin
+	delete from feeder f where f.object=OLD.id;
+	return OLD;
+end;$$;
+
+
+ALTER FUNCTION public."trg_removeFeeder"() OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1255 OID 49344)
+-- Dependencies: 5 603
+-- Name: trg_removeMeasuringChannel(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "trg_removeMeasuringChannel"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$begin
+	delete from measuringchannel mc where mc.mpoint=OLD.id;
+	return OLD;
+end;$$;
+
+
+ALTER FUNCTION public."trg_removeMeasuringChannel"() OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1255 OID 49346)
+-- Dependencies: 603 5
+-- Name: trg_removeMeasuringPoint(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "trg_removeMeasuringPoint"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$begin
+	delete from measuringpoint mp where mp.delp=OLD.id;
+	return OLD;
+end;$$;
+
+
+ALTER FUNCTION public."trg_removeMeasuringPoint"() OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1255 OID 49265)
+-- Dependencies: 603 5
+-- Name: trg_removeObject(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "trg_removeObject"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$begin
+delete from object o where o.factory=OLD.id;
+return OLD;
+end;$$;
+
+
+ALTER FUNCTION public."trg_removeObject"() OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1255 OID 41077)
+-- Dependencies: 603 5
+-- Name: trg_updLastDate()(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "trg_updLastDate()"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$declare
+	old_date timestamp without time zone;
+begin
+	select last_date into old_date from channel where id=NEW.channel;
+	if (old_date IS NULL) THEN
+		update channel set last_date=to_dt(NEW.date, NEW.itv, NEW.itv_length) where id=NEW.channel;
+	ELSE
+		if (to_dt(NEW.date, NEW.itv, NEW.itv_length) > old_date) THEN
+			update channel set last_date=to_dt(NEW.date, NEW.itv, NEW.itv_length) where id=NEW.channel;
+		END IF;
+	END IF;
+	RETURN NEW;
+end;$$;
+
+
+ALTER FUNCTION public."trg_updLastDate()"() OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 186 (class 1259 OID 41110)
+-- Dependencies: 5
+-- Name: balans; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE balans (
+    id integer NOT NULL,
+    name character varying(256)
+);
+
+
+ALTER TABLE public.balans OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1259 OID 41114)
+-- Dependencies: 5
+-- Name: balans_element; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE balans_element (
+    balans integer NOT NULL,
+    channel integer NOT NULL,
+    direction smallint
+);
+
+
+ALTER TABLE public.balans_element OWNER TO postgres;
+
+--
+-- TOC entry 185 (class 1259 OID 41108)
+-- Dependencies: 5 186
+-- Name: balans_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE balans_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.balans_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2063 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: balans_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE balans_id_seq OWNED BY balans.id;
+
+
+--
+-- TOC entry 181 (class 1259 OID 41039)
+-- Dependencies: 5
+-- Name: channel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE channel (
+    id integer NOT NULL,
+    index integer,
+    name character varying(35),
+    counter integer,
+    last_date timestamp without time zone
+);
+
+
+ALTER TABLE public.channel OWNER TO postgres;
+
+--
+-- TOC entry 180 (class 1259 OID 41037)
+-- Dependencies: 5 181
+-- Name: channel_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE channel_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.channel_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2064 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: channel_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE channel_id_seq OWNED BY channel.id;
+
+
+--
+-- TOC entry 182 (class 1259 OID 41062)
+-- Dependencies: 5
+-- Name: channel_names; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE channel_names (
+    name character varying(150) NOT NULL,
+    index integer
+);
+
+
+ALTER TABLE public.channel_names OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 16432)
+-- Dependencies: 5
+-- Name: connection; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE connection (
+    id integer NOT NULL,
+    name character varying(25),
+    type smallint,
+    options character varying(30)
+);
+
+
+ALTER TABLE public.connection OWNER TO postgres;
+
+--
+-- TOC entry 2065 (class 0 OID 0)
+-- Dependencies: 172
+-- Name: TABLE connection; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE connection IS 'Список созданных подключений';
+
+
+--
+-- TOC entry 174 (class 1259 OID 16438)
+-- Dependencies: 5
+-- Name: connection_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE connection_type (
+    id integer NOT NULL,
+    name character varying(25)
+);
+
+
+ALTER TABLE public.connection_type OWNER TO postgres;
+
+--
+-- TOC entry 173 (class 1259 OID 16436)
+-- Dependencies: 5 174
+-- Name: connection_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE connection_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.connection_type_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2066 (class 0 OID 0)
+-- Dependencies: 173
+-- Name: connection_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE connection_type_id_seq OWNED BY connection_type.id;
+
+
+--
+-- TOC entry 171 (class 1259 OID 16430)
+-- Dependencies: 5 172
+-- Name: connections_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE connections_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.connections_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2067 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: connections_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE connections_id_seq OWNED BY connection.id;
+
+
+--
+-- TOC entry 164 (class 1259 OID 16396)
+-- Dependencies: 1966 5
+-- Name: counter; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE counter (
+    id integer NOT NULL,
+    feeder integer NOT NULL,
+    type integer,
+    address smallint,
+    c_number bigint,
+    max_depth smallint,
+    channels smallint,
+    timeout_recv integer,
+    timeout_send integer,
+    password character varying(15),
+    allow smallint DEFAULT 1 NOT NULL,
+    login character varying(150),
+    additional text
+);
+
+
+ALTER TABLE public.counter OWNER TO postgres;
+
+--
+-- TOC entry 163 (class 1259 OID 16394)
+-- Dependencies: 164 5
+-- Name: counter_ID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "counter_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."counter_ID_seq" OWNER TO postgres;
+
+--
+-- TOC entry 2068 (class 0 OID 0)
+-- Dependencies: 163
+-- Name: counter_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "counter_ID_seq" OWNED BY counter.id;
+
+
+--
+-- TOC entry 166 (class 1259 OID 16402)
+-- Dependencies: 5
+-- Name: counter_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE counter_type (
+    id integer NOT NULL,
+    name character varying(50),
+    module character varying(30)
+);
+
+
+ALTER TABLE public.counter_type OWNER TO postgres;
+
+--
+-- TOC entry 165 (class 1259 OID 16400)
+-- Dependencies: 166 5
+-- Name: counter_type_ID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "counter_type_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."counter_type_ID_seq" OWNER TO postgres;
+
+--
+-- TOC entry 2069 (class 0 OID 0)
+-- Dependencies: 165
+-- Name: counter_type_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "counter_type_ID_seq" OWNED BY counter_type.id;
+
+
+--
+-- TOC entry 175 (class 1259 OID 16457)
+-- Dependencies: 5
+-- Name: data; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE data (
+    date date NOT NULL,
+    itv smallint NOT NULL,
+    feeder integer NOT NULL,
+    channel smallint NOT NULL,
+    value double precision,
+    c_value double precision,
+    status smallint,
+    itv_length smallint NOT NULL,
+    season smallint NOT NULL
+);
+
+
+ALTER TABLE public.data OWNER TO postgres;
+
+--
+-- TOC entry 2070 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: COLUMN data.itv; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN data.itv IS 'Номер интервала измерения. Для коммерческого профиля потребления - номер получасовки.';
+
+
+--
+-- TOC entry 2071 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: COLUMN data.channel; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN data.channel IS 'Канал учета [P+, P-, Q+, Q-]';
+
+
+--
+-- TOC entry 2072 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: COLUMN data.value; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN data.value IS 'Измеренная величина кВт*ч, кВар*ч и пр.';
+
+
+--
+-- TOC entry 2073 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: COLUMN data.c_value; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN data.c_value IS 'Показание счетчика для данного измерения';
+
+
+--
+-- TOC entry 170 (class 1259 OID 16423)
+-- Dependencies: 1970 1971 1972 1973 1974 5
+-- Name: feeder; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE feeder (
+    id integer NOT NULL,
+    name character varying(25),
+    object integer NOT NULL,
+    kt_h integer DEFAULT 1,
+    kt_l integer DEFAULT 1,
+    kn_h integer DEFAULT 1,
+    kn_l integer DEFAULT 1,
+    allow boolean DEFAULT true NOT NULL
+);
+
+
+ALTER TABLE public.feeder OWNER TO postgres;
+
+--
+-- TOC entry 168 (class 1259 OID 16414)
+-- Dependencies: 5
+-- Name: object; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE object (
+    id integer NOT NULL,
+    name character varying(25),
+    factory integer NOT NULL,
+    connection integer,
+    conn_str character varying(150),
+    recall smallint,
+    periodicity smallint
+);
+
+
+ALTER TABLE public.object OWNER TO postgres;
+
+--
+-- TOC entry 184 (class 1259 OID 41102)
+-- Dependencies: 1963 5
+-- Name: data_by_feeder; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW data_by_feeder AS
+    SELECT ch.fname, ch.name, d.channel, d.value FROM ((SELECT f.id, ch.index AS channel, sum(d.value) AS value FROM ((((data d LEFT JOIN channel ch ON ((ch.id = d.channel))) LEFT JOIN counter c ON ((c.id = ch.counter))) LEFT JOIN feeder f ON ((f.id = c.feeder))) LEFT JOIN object o ON ((o.id = f.object))) WHERE ((((o.id = 34) AND (to_dt(d.date, (d.itv)::integer) >= '2012-01-01 00:00:00'::timestamp without time zone)) AND (to_dt(d.date, (d.itv)::integer) < '2012-02-01 00:00:00'::timestamp without time zone)) AND (d.itv_length = 30)) GROUP BY f.id, ch.index) d LEFT JOIN (SELECT f.id AS feeder, f.name AS fname, ch.id, ch.index, ch.name FROM (((channel ch LEFT JOIN counter c ON ((c.id = ch.counter))) LEFT JOIN feeder f ON ((f.id = c.feeder))) LEFT JOIN object o ON ((o.id = f.object))) WHERE (o.id = 34)) ch ON (((d.id = ch.feeder) AND (d.channel = ch.index)))) ORDER BY ch.fname, d.channel;
+
+
+ALTER TABLE public.data_by_feeder OWNER TO postgres;
+
+--
+-- TOC entry 193 (class 1259 OID 49297)
+-- Dependencies: 5
+-- Name: deliverypoint; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE deliverypoint (
+    id integer NOT NULL,
+    name character varying(100),
+    dpg integer
+);
+
+
+ALTER TABLE public.deliverypoint OWNER TO postgres;
+
+--
+-- TOC entry 192 (class 1259 OID 49295)
+-- Dependencies: 193 5
+-- Name: deliverypoint_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE deliverypoint_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.deliverypoint_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2074 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: deliverypoint_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE deliverypoint_id_seq OWNED BY deliverypoint.id;
+
+
+--
+-- TOC entry 195 (class 1259 OID 49303)
+-- Dependencies: 5
+-- Name: deliverypointgroup; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE deliverypointgroup (
+    id integer NOT NULL,
+    name character varying(100)
+);
+
+
+ALTER TABLE public.deliverypointgroup OWNER TO postgres;
+
+--
+-- TOC entry 194 (class 1259 OID 49301)
+-- Dependencies: 195 5
+-- Name: deliverypointgroup_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE deliverypointgroup_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.deliverypointgroup_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2075 (class 0 OID 0)
+-- Dependencies: 194
+-- Name: deliverypointgroup_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE deliverypointgroup_id_seq OWNED BY deliverypointgroup.id;
+
+
+--
+-- TOC entry 162 (class 1259 OID 16390)
+-- Dependencies: 5
+-- Name: factory; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE factory (
+    id integer NOT NULL,
+    name character varying(50)
+);
+
+
+ALTER TABLE public.factory OWNER TO postgres;
+
+--
+-- TOC entry 161 (class 1259 OID 16388)
+-- Dependencies: 5 162
+-- Name: factory_ID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "factory_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."factory_ID_seq" OWNER TO postgres;
+
+--
+-- TOC entry 2076 (class 0 OID 0)
+-- Dependencies: 161
+-- Name: factory_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "factory_ID_seq" OWNED BY factory.id;
+
+
+--
+-- TOC entry 169 (class 1259 OID 16421)
+-- Dependencies: 5 170
+-- Name: feeder_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE feeder_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.feeder_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2077 (class 0 OID 0)
+-- Dependencies: 169
+-- Name: feeder_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE feeder_id_seq OWNED BY feeder.id;
+
+
+--
+-- TOC entry 176 (class 1259 OID 18024)
+-- Dependencies: 5
+-- Name: info; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE info (
+    name character varying(50) NOT NULL,
+    value character varying(500)
+);
+
+
+ALTER TABLE public.info OWNER TO postgres;
+
+--
+-- TOC entry 179 (class 1259 OID 18141)
+-- Dependencies: 5
+-- Name: interview; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE interview (
+    schedule integer NOT NULL,
+    object integer NOT NULL,
+    priority smallint
+);
+
+
+ALTER TABLE public.interview OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 49307)
+-- Dependencies: 5
+-- Name: measuringchannel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE measuringchannel (
+    mpoint integer NOT NULL,
+    channel integer NOT NULL,
+    name character varying(100)
+);
+
+
+ALTER TABLE public.measuringchannel OWNER TO postgres;
+
+--
+-- TOC entry 191 (class 1259 OID 49291)
+-- Dependencies: 5
+-- Name: measuringpoint; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE measuringpoint (
+    id integer NOT NULL,
+    name character varying(100),
+    delp integer
+);
+
+
+ALTER TABLE public.measuringpoint OWNER TO postgres;
+
+--
+-- TOC entry 190 (class 1259 OID 49289)
+-- Dependencies: 191 5
+-- Name: measuringpoint_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE measuringpoint_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.measuringpoint_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2078 (class 0 OID 0)
+-- Dependencies: 190
+-- Name: measuringpoint_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE measuringpoint_id_seq OWNED BY measuringpoint.id;
+
+
+--
+-- TOC entry 199 (class 1259 OID 49327)
+-- Dependencies: 5
+-- Name: model; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE model (
+    id integer NOT NULL,
+    name character varying(100)
+);
+
+
+ALTER TABLE public.model OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 49325)
+-- Dependencies: 5 199
+-- Name: model_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE model_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.model_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2079 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: model_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE model_id_seq OWNED BY model.id;
+
+
+--
+-- TOC entry 167 (class 1259 OID 16412)
+-- Dependencies: 5 168
+-- Name: object_ID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "object_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."object_ID_seq" OWNER TO postgres;
+
+--
+-- TOC entry 2080 (class 0 OID 0)
+-- Dependencies: 167
+-- Name: object_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "object_ID_seq" OWNED BY object.id;
+
+
+--
+-- TOC entry 183 (class 1259 OID 41091)
+-- Dependencies: 5
+-- Name: old_date; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE old_date (
+    last_date timestamp without time zone
+);
+
+
+ALTER TABLE public.old_date OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 49356)
+-- Dependencies: 5
+-- Name: plan; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE plan (
+    date date,
+    itv integer,
+    dpg integer,
+    value double precision
+);
+
+
+ALTER TABLE public.plan OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1259 OID 49322)
+-- Dependencies: 5
+-- Name: point_codes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE point_codes (
+    point integer NOT NULL,
+    model integer NOT NULL,
+    pointtype integer NOT NULL,
+    code character varying(150)
+);
+
+
+ALTER TABLE public.point_codes OWNER TO postgres;
+
+--
+-- TOC entry 178 (class 1259 OID 18135)
+-- Dependencies: 1978 1979 5
+-- Name: schedule; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE schedule (
+    id integer NOT NULL,
+    name character varying(50),
+    periodicity smallint DEFAULT 1440 NOT NULL,
+    shift integer DEFAULT 0 NOT NULL,
+    temp boolean
+);
+
+
+ALTER TABLE public.schedule OWNER TO postgres;
+
+--
+-- TOC entry 177 (class 1259 OID 18133)
+-- Dependencies: 178 5
+-- Name: schedule_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE schedule_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.schedule_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2081 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: schedule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE schedule_id_seq OWNED BY schedule.id;
+
+
+--
+-- TOC entry 201 (class 1259 OID 49361)
+-- Dependencies: 5
+-- Name: user_access; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE user_access (
+    userid integer NOT NULL,
+    dpg integer NOT NULL
+);
+
+
+ALTER TABLE public.user_access OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1259 OID 49272)
+-- Dependencies: 5
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    login character varying(50),
+    password character varying(50),
+    email character varying(150)
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 188 (class 1259 OID 49270)
+-- Dependencies: 5 189
+-- Name: user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2082 (class 0 OID 0)
+-- Dependencies: 188
+-- Name: user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE user_id_seq OWNED BY users.id;
+
+
+--
+-- TOC entry 1981 (class 2604 OID 41113)
+-- Dependencies: 186 185 186
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE balans ALTER COLUMN id SET DEFAULT nextval('balans_id_seq'::regclass);
+
+
+--
+-- TOC entry 1980 (class 2604 OID 41042)
+-- Dependencies: 181 180 181
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE channel ALTER COLUMN id SET DEFAULT nextval('channel_id_seq'::regclass);
+
+
+--
+-- TOC entry 1975 (class 2604 OID 16435)
+-- Dependencies: 172 171 172
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE connection ALTER COLUMN id SET DEFAULT nextval('connections_id_seq'::regclass);
+
+
+--
+-- TOC entry 1976 (class 2604 OID 16441)
+-- Dependencies: 173 174 174
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE connection_type ALTER COLUMN id SET DEFAULT nextval('connection_type_id_seq'::regclass);
+
+
+--
+-- TOC entry 1965 (class 2604 OID 16399)
+-- Dependencies: 163 164 164
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE counter ALTER COLUMN id SET DEFAULT nextval('"counter_ID_seq"'::regclass);
+
+
+--
+-- TOC entry 1967 (class 2604 OID 16405)
+-- Dependencies: 165 166 166
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE counter_type ALTER COLUMN id SET DEFAULT nextval('"counter_type_ID_seq"'::regclass);
+
+
+--
+-- TOC entry 1984 (class 2604 OID 49300)
+-- Dependencies: 193 192 193
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE deliverypoint ALTER COLUMN id SET DEFAULT nextval('deliverypoint_id_seq'::regclass);
+
+
+--
+-- TOC entry 1985 (class 2604 OID 49306)
+-- Dependencies: 194 195 195
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE deliverypointgroup ALTER COLUMN id SET DEFAULT nextval('deliverypointgroup_id_seq'::regclass);
+
+
+--
+-- TOC entry 1964 (class 2604 OID 16393)
+-- Dependencies: 162 161 162
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE factory ALTER COLUMN id SET DEFAULT nextval('"factory_ID_seq"'::regclass);
+
+
+--
+-- TOC entry 1969 (class 2604 OID 16426)
+-- Dependencies: 169 170 170
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE feeder ALTER COLUMN id SET DEFAULT nextval('feeder_id_seq'::regclass);
+
+
+--
+-- TOC entry 1983 (class 2604 OID 49294)
+-- Dependencies: 191 190 191
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE measuringpoint ALTER COLUMN id SET DEFAULT nextval('measuringpoint_id_seq'::regclass);
+
+
+--
+-- TOC entry 1986 (class 2604 OID 49330)
+-- Dependencies: 199 198 199
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE model ALTER COLUMN id SET DEFAULT nextval('model_id_seq'::regclass);
+
+
+--
+-- TOC entry 1968 (class 2604 OID 16417)
+-- Dependencies: 167 168 168
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE object ALTER COLUMN id SET DEFAULT nextval('"object_ID_seq"'::regclass);
+
+
+--
+-- TOC entry 1977 (class 2604 OID 18138)
+-- Dependencies: 177 178 178
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE schedule ALTER COLUMN id SET DEFAULT nextval('schedule_id_seq'::regclass);
+
+
+--
+-- TOC entry 1982 (class 2604 OID 49275)
+-- Dependencies: 188 189 189
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('user_id_seq'::regclass);
+
+
+--
+-- TOC entry 2001 (class 2606 OID 16450)
+-- Dependencies: 172 172
+-- Name: Connection_pr_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY connection
+    ADD CONSTRAINT "Connection_pr_key" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2027 (class 2606 OID 49250)
+-- Dependencies: 187 187 187
+-- Name: balans_element_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY balans_element
+    ADD CONSTRAINT "balans_element_prKey" PRIMARY KEY (balans, channel);
+
+
+--
+-- TOC entry 2025 (class 2606 OID 41066)
+-- Dependencies: 182 182
+-- Name: channel_name_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY channel_names
+    ADD CONSTRAINT "channel_name_prKey" PRIMARY KEY (name);
+
+
+--
+-- TOC entry 2023 (class 2606 OID 41060)
+-- Dependencies: 181 181
+-- Name: channel_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY channel
+    ADD CONSTRAINT "channel_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2003 (class 2606 OID 16452)
+-- Dependencies: 174 174
+-- Name: conntype_pr_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY connection_type
+    ADD CONSTRAINT conntype_pr_key PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1991 (class 2606 OID 49230)
+-- Dependencies: 164 164
+-- Name: counter_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY counter
+    ADD CONSTRAINT "counter_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1993 (class 2606 OID 16456)
+-- Dependencies: 166 166
+-- Name: countertype_pr_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY counter_type
+    ADD CONSTRAINT countertype_pr_key PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2035 (class 2606 OID 49318)
+-- Dependencies: 193 193
+-- Name: deliverypoint_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY deliverypoint
+    ADD CONSTRAINT "deliverypoint_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2037 (class 2606 OID 49321)
+-- Dependencies: 195 195
+-- Name: dpg_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY deliverypointgroup
+    ADD CONSTRAINT "dpg_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1988 (class 2606 OID 18007)
+-- Dependencies: 162 162
+-- Name: factory_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY factory
+    ADD CONSTRAINT "factory_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1999 (class 2606 OID 16448)
+-- Dependencies: 170 170
+-- Name: feeder_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY feeder
+    ADD CONSTRAINT "feeder_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2015 (class 2606 OID 18031)
+-- Dependencies: 176 176
+-- Name: info_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY info
+    ADD CONSTRAINT "info_prKey" PRIMARY KEY (name);
+
+
+--
+-- TOC entry 2019 (class 2606 OID 18147)
+-- Dependencies: 179 179 179
+-- Name: interview_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY interview
+    ADD CONSTRAINT "interview_prKey" PRIMARY KEY (schedule, object);
+
+
+--
+-- TOC entry 2041 (class 2606 OID 49311)
+-- Dependencies: 196 196 196
+-- Name: measuringchannel_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY measuringchannel
+    ADD CONSTRAINT "measuringchannel_prKey" PRIMARY KEY (mpoint, channel);
+
+
+--
+-- TOC entry 2032 (class 2606 OID 49313)
+-- Dependencies: 191 191
+-- Name: measuringpoint_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY measuringpoint
+    ADD CONSTRAINT "measuringpoint_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2046 (class 2606 OID 49332)
+-- Dependencies: 199 199
+-- Name: model_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY model
+    ADD CONSTRAINT "model_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1996 (class 2606 OID 16444)
+-- Dependencies: 168 168
+-- Name: object_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY object
+    ADD CONSTRAINT "object_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2044 (class 2606 OID 49337)
+-- Dependencies: 197 197 197 197
+-- Name: point_codes_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY point_codes
+    ADD CONSTRAINT "point_codes_prKey" PRIMARY KEY (point, model, pointtype);
+
+
+--
+-- TOC entry 2013 (class 2606 OID 49354)
+-- Dependencies: 175 175 175 175 175 175
+-- Name: prKey_data; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY data
+    ADD CONSTRAINT "prKey_data" PRIMARY KEY (date, itv, channel, itv_length, season);
+
+
+--
+-- TOC entry 2017 (class 2606 OID 18145)
+-- Dependencies: 178 178
+-- Name: shedule_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY schedule
+    ADD CONSTRAINT "shedule_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2048 (class 2606 OID 49367)
+-- Dependencies: 201 201 201
+-- Name: uacess_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY user_access
+    ADD CONSTRAINT "uacess_prKey" PRIMARY KEY (userid, dpg);
+
+
+--
+-- TOC entry 2029 (class 2606 OID 49277)
+-- Dependencies: 189 189
+-- Name: user_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT "user_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2020 (class 1259 OID 41061)
+-- Dependencies: 181 181
+-- Name: channel_idx; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX channel_idx ON channel USING btree (index, counter);
+
+
+--
+-- TOC entry 2021 (class 1259 OID 49228)
+-- Dependencies: 181
+-- Name: channel_idx_counter; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX channel_idx_counter ON channel USING btree (counter);
+
+
+--
+-- TOC entry 1989 (class 1259 OID 49231)
+-- Dependencies: 164
+-- Name: counter_idx_feeder; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX counter_idx_feeder ON counter USING btree (feeder);
+
+
+--
+-- TOC entry 2004 (class 1259 OID 41107)
+-- Dependencies: 175 175 175 175 175
+-- Name: data_idx1; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX data_idx1 ON data USING btree (date, itv, feeder, channel, itv_length);
+
+
+--
+-- TOC entry 2005 (class 1259 OID 49226)
+-- Dependencies: 175 175 175 175
+-- Name: data_idx2; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX data_idx2 ON data USING btree (date, itv, channel, itv_length);
+
+
+--
+-- TOC entry 2006 (class 1259 OID 49227)
+-- Dependencies: 175 175
+-- Name: data_idx3; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX data_idx3 ON data USING btree (date, itv);
+
+
+--
+-- TOC entry 2007 (class 1259 OID 49254)
+-- Dependencies: 175
+-- Name: data_idx_channel; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX data_idx_channel ON data USING btree (channel);
+
+
+--
+-- TOC entry 2008 (class 1259 OID 49234)
+-- Dependencies: 175 175 175
+-- Name: data_idx_dfc; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX data_idx_dfc ON data USING btree (date, feeder, channel);
+
+
+--
+-- TOC entry 2009 (class 1259 OID 49287)
+-- Dependencies: 175 175 175
+-- Name: data_idx_dfi; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX data_idx_dfi ON data USING btree (date, itv, feeder);
+
+
+--
+-- TOC entry 2010 (class 1259 OID 32844)
+-- Dependencies: 175 175
+-- Name: data_idx_dtf; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX data_idx_dtf ON data USING btree (date, feeder);
+
+
+--
+-- TOC entry 2011 (class 1259 OID 49288)
+-- Dependencies: 175
+-- Name: data_idx_feeder; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX data_idx_feeder ON data USING btree (feeder);
+
+
+--
+-- TOC entry 2033 (class 1259 OID 49319)
+-- Dependencies: 193
+-- Name: deliverypoint_idx_dpg; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX deliverypoint_idx_dpg ON deliverypoint USING btree (dpg);
+
+
+--
+-- TOC entry 1997 (class 1259 OID 49232)
+-- Dependencies: 170
+-- Name: feeder_idx_object; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX feeder_idx_object ON feeder USING btree (object);
+
+
+--
+-- TOC entry 2038 (class 1259 OID 49315)
+-- Dependencies: 196
+-- Name: measuringchannel_idx_channel; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX measuringchannel_idx_channel ON measuringchannel USING btree (channel);
+
+
+--
+-- TOC entry 2039 (class 1259 OID 49316)
+-- Dependencies: 196
+-- Name: measuringchannel_idx_mpoint; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX measuringchannel_idx_mpoint ON measuringchannel USING btree (mpoint);
+
+
+--
+-- TOC entry 2030 (class 1259 OID 49314)
+-- Dependencies: 191
+-- Name: measuringpoint_idx_delp; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX measuringpoint_idx_delp ON measuringpoint USING btree (delp);
+
+
+--
+-- TOC entry 1994 (class 1259 OID 49233)
+-- Dependencies: 168
+-- Name: object_idx_factory; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX object_idx_factory ON object USING btree (factory);
+
+
+--
+-- TOC entry 2042 (class 1259 OID 49343)
+-- Dependencies: 197
+-- Name: point_codes_idx_code; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX point_codes_idx_code ON point_codes USING btree (code);
+
+
+--
+-- TOC entry 2054 (class 2620 OID 49269)
+-- Dependencies: 181 219
+-- Name: channel_onRemove; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "channel_onRemove" BEFORE DELETE ON channel FOR EACH ROW EXECUTE PROCEDURE "trg_removeDataByChannel"();
+
+
+--
+-- TOC entry 2050 (class 2620 OID 49263)
+-- Dependencies: 164 217
+-- Name: counter_onRemove; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "counter_onRemove" BEFORE DELETE ON counter FOR EACH ROW EXECUTE PROCEDURE "trg_removeChannel"();
+
+
+--
+-- TOC entry 2053 (class 2620 OID 41078)
+-- Dependencies: 175 224
+-- Name: data_updLastDate; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "data_updLastDate" AFTER INSERT ON data FOR EACH ROW EXECUTE PROCEDURE "trg_updLastDate()"();
+
+
+--
+-- TOC entry 2056 (class 2620 OID 49348)
+-- Dependencies: 193 221
+-- Name: deliverypoint_onRemove; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "deliverypoint_onRemove" BEFORE DELETE ON deliverypoint FOR EACH ROW EXECUTE PROCEDURE "trg_removeMeasuringPoint"();
+
+
+--
+-- TOC entry 2057 (class 2620 OID 49349)
+-- Dependencies: 222 195
+-- Name: deliverypointgroup_onRemove; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "deliverypointgroup_onRemove" BEFORE DELETE ON deliverypointgroup FOR EACH ROW EXECUTE PROCEDURE "trg_removeDeliveryPoint"();
+
+
+--
+-- TOC entry 2049 (class 2620 OID 49266)
+-- Dependencies: 216 162
+-- Name: factory_onRemove; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "factory_onRemove" BEFORE DELETE ON factory FOR EACH ROW EXECUTE PROCEDURE "trg_removeObject"();
+
+
+--
+-- TOC entry 2052 (class 2620 OID 49267)
+-- Dependencies: 170 215
+-- Name: feeder_onRemove; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "feeder_onRemove" BEFORE DELETE ON feeder FOR EACH ROW EXECUTE PROCEDURE "trg_removeCounter"();
+
+
+--
+-- TOC entry 2055 (class 2620 OID 49345)
+-- Dependencies: 191 220
+-- Name: measuringpoint_onRemove; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "measuringpoint_onRemove" BEFORE DELETE ON measuringpoint FOR EACH ROW EXECUTE PROCEDURE "trg_removeMeasuringChannel"();
+
+
+--
+-- TOC entry 2051 (class 2620 OID 49261)
+-- Dependencies: 218 168
+-- Name: object_onRemove; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "object_onRemove" BEFORE DELETE ON object FOR EACH ROW EXECUTE PROCEDURE "trg_removeFeeder"();
+
+
+-- Completed on 2012-04-10 14:58:08
+
+--
+-- PostgreSQL database dump complete
+--
+

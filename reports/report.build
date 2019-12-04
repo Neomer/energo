@@ -1,0 +1,28 @@
+OBJECTS_DIR    = ../build/tmp/$$TARGET
+MOC_DIR        = ../build/tmp/$$TARGET
+
+UI_HEADERS_DIR = $$PRJPATH/reports/$$TARGET
+UI_SOURCES_DIR = $$PRJPATH/reports/$$TARGET
+UI_DIR = $$PRJPATH/reports/$$TARGET
+
+
+CONFIG(debug, debug|release) 
+{
+	DESTDIR = ../../build/debug/reports
+	DEFINES -= QT_NO_DEBUG_OUTPUT
+} ELSE {
+	DESTDIR = ../../build/release/reports
+	DEFINES *= QT_NO_DEBUG_OUTPUT
+}
+
+HEADERS += \
+    ../../includes/AbstractReportPlugin.h \
+    ../ReportDateSelector.h \
+	#../ReportQuery.h
+
+SOURCES += \
+    ../ReportDateSelector.cpp \
+	#../ReportQuery.cpp
+
+
+

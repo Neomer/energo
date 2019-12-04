@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/AlertView">
+        <file>images/error.png</file>
+        <file>images/warning.png</file>
+        <file>images/refresh.png</file>
+        <file>images/book-closed.png</file>
+        <file>images/book-open.png</file>
+        <file>images/information.png</file>
+    </qresource>
+</RCC>

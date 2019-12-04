@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/sceditor/toolbox">
+        <file>objects/database-link.png</file>
+        <file>objects/case_smallcaps.png</file>
+        <file>objects/applications-development-5.png</file>
+        <file>objects/document-preview.png</file>
+        <file>objects/document-save-5.png</file>
+        <file>objects/document-open-2.png</file>
+        <file>objects/draw-ellipse-2.png</file>
+        <file>objects/draw-line-3.png</file>
+        <file>objects/draw-rectangle-2.png</file>
+        <file>objects/draw-triangle3.png</file>
+        <file>objects/draw-triangle4.png</file>
+        <file>objects/draw-bezier-curves.png</file>
+        <file>objects/katomic-3.png</file>
+    </qresource>
+    <qresource prefix="/sceditor/objects">
+        <file>objects/volttrans.png</file>
+        <file>objects/breaker.PNG</file>
+        <file>objects/oil-circuit-breaker.PNG</file>
+    </qresource>
+    <qresource prefix="/sceditor/popup">
+        <file>objects/delete.png</file>
+        <file>objects/bringtofront.png</file>
+        <file>objects/sendtoback.png</file>
+        <file>objects/bookmark-new-2.png</file>
+        <file>objects/edit-copy-7.png</file>
+        <file>objects/document-close-2.png</file>
+        <file>objects/edit-past.png</file>
+    </qresource>
+</RCC>

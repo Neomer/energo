@@ -1,0 +1,12 @@
+#ifndef OPERVIEW_GLOBAL_H
+#define OPERVIEW_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(OPERVIEW_LIBRARY)
+#  define OPERVIEWSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define OPERVIEWSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // OPERVIEW_GLOBAL_H

@@ -1,0 +1,12 @@
+#ifndef SICONC10V2_GLOBAL_H
+#define SICONC10V2_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(SICONC10V2_LIBRARY)
+#  define SICONC10V2SHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define SICONC10V2SHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // SICONC10V2_GLOBAL_H

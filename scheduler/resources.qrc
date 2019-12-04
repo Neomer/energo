@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/scheduler">
+        <file>images/clock-go.png</file>
+        <file>images/clock-stop.png</file>
+        <file>images/go-next-view.png</file>
+        <file>images/media-playback-stop-7.png</file>
+        <file>images/exit.png</file>
+        <file>images/object.png</file>
+        <file>images/server.png</file>
+        <file>images/tray.png</file>
+    </qresource>
+</RCC>

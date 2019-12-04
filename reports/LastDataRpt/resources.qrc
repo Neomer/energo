@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/lastdatarpt">
+        <file>images/calendar.png</file>
+        <file>images/channel.png</file>
+        <file>images/counter.png</file>
+        <file>images/excel.png</file>
+        <file>images/feeder.png</file>
+        <file>images/object.png</file>
+        <file>images/refresh.png</file>
+        <file>images/server.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/planning">
+        <file>images/gtp.png</file>
+        <file>images/refresh.png</file>
+        <file>images/excel.png</file>
+        <file>images/view-calendar.png</file>
+    </qresource>
+</RCC>

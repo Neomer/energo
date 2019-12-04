@@ -1,0 +1,49 @@
+
+<orders><order><datetime>
+<date>04.06.2013</date>
+<time1>12</time1>
+<time2>20</time2>
+</datetime>
+<from>
+<type1adress>1</type1adress>
+<type1station />
+<type1aero />
+<adres1>курская</adres1>
+<home1>22</home1>
+<korpus1>1</korpus1>
+<podezd1>3</podezd1>
+<vokzal1>-- Выберите вокзал --</vokzal1>
+<poezd1 />
+<vagon1 />
+<aero1>-- Выберите аэропорт --</aero1>
+<reis1 />
+</from>
+<to>
+<type2adress />
+<type2station>1</type2station>
+<type2aero />
+<city2>Город</city2>
+<adres2 />
+<home2 />
+<korpus2 />
+<podezd2 />
+<vokzal2>Ленинградский вокзал</vokzal2>
+<aero2>-- Выберите аэропорт --</aero2>
+</to>
+<class>
+<class0>1</class0>
+<class1 />
+<class2 />
+</class>
+<special>
+<dc />
+<pc />
+<tc />
+<kc />
+<es />
+<ha />
+<cd />
+</special>
+<id>1</id>
+<phone>+79120106724</phone>
+</order></orders>

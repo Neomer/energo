@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>conf.ico</file>
+        <file>images/counter.png</file>
+        <file>images/exit.png</file>
+        <file>images/export.png</file>
+        <file>images/print_preview.png</file>
+        <file>images/print16.png</file>
+    </qresource>
+    <qresource prefix="/toolbar">
+        <file>images/print.png</file>
+    </qresource>
+</RCC>

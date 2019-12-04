@@ -1,0 +1,8 @@
+revoke all 
+on all tables 
+in schema public 
+from tl_user;
+
+grant select
+on table data
+to tl_user;

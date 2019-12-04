@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MPSets</class>
+ <widget class="QWidget" name="MPSets">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>616</width>
+    <height>604</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>591</width>
+     <height>541</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="mainLayout">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <property name="topMargin">
+     <number>6</number>
+    </property>
+    <property name="rightMargin">
+     <number>6</number>
+    </property>
+    <property name="bottomMargin">
+     <number>6</number>
+    </property>
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="margin">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Наименование:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="margin">
+         <number>5</number>
+        </property>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="cmdSave">
+          <property name="text">
+           <string>Сохранить</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="cmdDrop">
+          <property name="text">
+           <string>Сбросить</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Действия:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLineEdit" name="txtName"/>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <property name="rightMargin">
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="cmdCodes">
+            <property name="text">
+             <string>Изменить кодировку...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdAddChannel">
+            <property name="text">
+             <string>Добавить канал...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdRemove">
+            <property name="text">
+             <string>Удалить точку изменерия</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="1">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>cmdSave</sender>
+   <signal>clicked()</signal>
+   <receiver>MPSets</receiver>
+   <slot>saveChanges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>442</x>
+     <y>515</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>261</x>
+     <y>761</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdDrop</sender>
+   <signal>clicked()</signal>
+   <receiver>MPSets</receiver>
+   <slot>dropChanges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>526</x>
+     <y>523</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>100</x>
+     <y>779</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdCodes</sender>
+   <signal>clicked()</signal>
+   <receiver>MPSets</receiver>
+   <slot>editCodes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>208</x>
+     <y>73</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>204</x>
+     <y>835</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdAddChannel</sender>
+   <signal>clicked()</signal>
+   <receiver>MPSets</receiver>
+   <slot>appendChild()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>89</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>817</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdRemove</sender>
+   <signal>clicked()</signal>
+   <receiver>MPSets</receiver>
+   <slot>removeItem()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>172</x>
+     <y>130</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>181</x>
+     <y>805</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>saveChanges()</slot>
+  <slot>dropChanges()</slot>
+  <slot>editCodes()</slot>
+  <slot>removeItem()</slot>
+  <slot>appendChild()</slot>
+ </slots>
+</ui>

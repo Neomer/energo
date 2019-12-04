@@ -1,0 +1,12 @@
+#ifndef ENERGOMERA_GLOBAL_H
+#define ENERGOMERA_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(ENERGOMERA_LIBRARY)
+#  define ENERGOMERASHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define ENERGOMERASHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // ENERGOMERA_GLOBAL_H

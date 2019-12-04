@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/balansrpt">
+        <file>images/balans.png</file>
+        <file>images/refresh.png</file>
+        <file>images/excel.png</file>
+        <file>images/filter.png</file>
+        <file>images/work-day.png</file>
+        <file>images/weekend.png</file>
+        <file>images/all-days.png</file>
+    </qresource>
+</RCC>

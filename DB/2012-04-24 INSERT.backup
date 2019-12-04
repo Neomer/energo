@@ -1,0 +1,120 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.0
+-- Dumped by pg_dump version 9.1.0
+-- Started on 2012-04-24 14:55:18
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 203 (class 1259 OID 49457)
+-- Dependencies: 5
+-- Name: channel_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE channel_type (
+    id integer NOT NULL,
+    name character varying(150)
+);
+
+
+ALTER TABLE public.channel_type OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 49460)
+-- Dependencies: 5 203
+-- Name: channel_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE channel_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.channel_type_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 1984 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: channel_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE channel_type_id_seq OWNED BY channel_type.id;
+
+
+--
+-- TOC entry 1985 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: channel_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('channel_type_id_seq', 5, true);
+
+
+--
+-- TOC entry 1977 (class 2604 OID 49462)
+-- Dependencies: 204 203
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE channel_type ALTER COLUMN id SET DEFAULT nextval('channel_type_id_seq'::regclass);
+
+
+--
+-- TOC entry 1980 (class 0 OID 49457)
+-- Dependencies: 203
+-- Data for Name: channel_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO channel_type (id, name) VALUES (1, 'Электроэнергия');
+INSERT INTO channel_type (id, name) VALUES (2, 'Фазные токи');
+INSERT INTO channel_type (id, name) VALUES (3, 'Фазные напряжения');
+INSERT INTO channel_type (id, name) VALUES (4, 'Частота');
+INSERT INTO channel_type (id, name) VALUES (5, 'Косинус Фи');
+
+
+--
+-- TOC entry 1979 (class 2606 OID 49467)
+-- Dependencies: 203 203
+-- Name: channel_type_prKey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY channel_type
+    ADD CONSTRAINT "channel_type_prKey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1983 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: channel_type; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE channel_type FROM PUBLIC;
+REVOKE ALL ON TABLE channel_type FROM postgres;
+GRANT ALL ON TABLE channel_type TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE channel_type TO energo_sys;
+GRANT SELECT ON TABLE channel_type TO energo_oper;
+GRANT SELECT ON TABLE channel_type TO energo_user;
+
+
+-- Completed on 2012-04-24 14:55:19
+
+--
+-- PostgreSQL database dump complete
+--
+

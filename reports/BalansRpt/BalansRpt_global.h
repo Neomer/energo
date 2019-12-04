@@ -1,0 +1,12 @@
+#ifndef BALANSRPT_GLOBAL_H
+#define BALANSRPT_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(BALANSRPT_LIBRARY)
+#  define BALANSRPTSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define BALANSRPTSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // BALANSRPT_GLOBAL_H
