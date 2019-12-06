@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 include(../path.build)
+include(../pg.build)
 
 QT       += core gui
 
@@ -119,8 +120,8 @@ FORMS    += \
     channelssets.ui \
     channelsaddsets.ui
 
-LIBS += $$PRJPATH/lib/pgre/libpq.lib \
-		$$PRJPATH/lib/libpgredrv.a
+LIBS += -L$$PG_PATH/lib -lpq \
+        -L$$BUILD_PATH -lpgredrv
 
 RESOURCES += \
     resources.qrc

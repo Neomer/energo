@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 include(../path.build)
+include(../pg.build)
 
 QT = core
 
@@ -21,4 +22,4 @@ HEADERS += PgreSqlDrv.h \
     export.h \
     PgreSqlResult.h
 
-LIBS += $$PRJPATH/lib/pgre/libpq.lib
+LIBS += -L$$PG_PATH/lib -lpq

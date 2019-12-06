@@ -22,19 +22,18 @@ SOURCES += Set4tm.cpp \
 
 HEADERS += Set4tm.h\
         set4tm_global.h \
-    Set4tmInterface.h \
-    global.h \
-    ../includes/global.h \
+        Set4tmInterface.h \
+        global.h \
+        ../includes/global.h \
 	../includes/CounterInterface.h \
 	../recv/connection.h
 
 CONFIG(debug, debug|release) {
-	LIBS  += $$PRJPATH/lib/qextserialportd1.dll
-} 
-ELSE {
-	LIBS  += $$PRJPATH/lib/qextserialport1.dll
+        LIBS  += -L$$BUILD_PATH -lqextserialportd1
 }
-
+CONFIG(release, debug|release) {
+        LIBS  += -L$$BUILD_PATH -lqextserialport1
+}
 
 
 

@@ -21,8 +21,9 @@ SOURCES += DataViewRpt.cpp \
 HEADERS += DataViewRpt.h\
         DataViewRpt_global.h \
 
-LIBS += $$PRJPATH/lib/libpgredrv.a \
-		$$PRJPATH/lib/libreportengine.a
+LIBS +=  -L$$BUILD_PATH -lpgredrv \
+         -L$$BUILD_PATH -lreportengine
+
 
 FORMS += \
     DataViewForm.ui

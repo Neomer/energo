@@ -17,8 +17,9 @@ SOURCES += FeederDataRpt.cpp
 HEADERS += FeederDataRpt.h\
         FeederDataRpt_global.h
 
-LIBS += $$PRJPATH/lib/libpgredrv.a \
-		$$PRJPATH/lib/libreportengine.a
+LIBS +=  -L$$BUILD_PATH -lpgredrv \
+         -L$$BUILD_PATH -lreportengine
+
 
 FORMS += \
     FeederDataForm.ui

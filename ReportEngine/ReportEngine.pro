@@ -39,7 +39,7 @@ HEADERS += ReportEngine.h \
     ReportWidget.h \
     ReportSheetRegion.h
 
-LIBS += $$PRJPATH/lib/libpgredrv.a
+LIBS += -L$$BUILD_PATH -lpgredrv
 
 FORMS += \
     PrintPreviewDlg.ui

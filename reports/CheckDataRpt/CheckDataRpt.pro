@@ -23,7 +23,9 @@ HEADERS += checkdatarpt.h\
 INSTALLS += plugin
 
 
-LIBS += $$PRJPATH/lib/libpgredrv.a
+LIBS +=  -L$$BUILD_PATH -lpgredrv \
+         -L$$BUILD_PATH -lreportengine
+
 
 RESOURCES += \
     resources.qrc

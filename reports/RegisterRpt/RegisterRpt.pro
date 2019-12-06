@@ -25,8 +25,9 @@ SOURCES += RegisterRpt.cpp
 HEADERS += RegisterRpt.h\
         registerrpt_global.h
 
-LIBS += $$PRJPATH/lib/libpgredrv.a \
-		$$PRJPATH/lib/libreportengine.a
+LIBS +=  -L$$BUILD_PATH -lpgredrv \
+         -L$$BUILD_PATH -lreportengine
+
 
 unix:!symbian {
     maemo5 {

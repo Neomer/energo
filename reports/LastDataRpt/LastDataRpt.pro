@@ -17,7 +17,9 @@ SOURCES += LastDataRpt.cpp
 HEADERS += LastDataRpt.h\
         LastDataRpt_global.h
 
-LIBS += $$PRJPATH/lib/libpgredrv.a
+LIBS +=  -L$$BUILD_PATH -lpgredrv \
+         -L$$BUILD_PATH -lreportengine
+
 
 FORMS += \
     LastDataForm.ui

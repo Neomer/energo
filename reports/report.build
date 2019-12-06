@@ -6,14 +6,16 @@ UI_SOURCES_DIR = $$PRJPATH/reports/$$TARGET
 UI_DIR = $$PRJPATH/reports/$$TARGET
 
 
-CONFIG(debug, debug|release) 
-{
+CONFIG(debug, debug|release) {
 	DESTDIR = ../../build/debug/reports
 	DEFINES -= QT_NO_DEBUG_OUTPUT
-} ELSE {
+}
+CONFIG(release, debug|release) {
 	DESTDIR = ../../build/release/reports
 	DEFINES *= QT_NO_DEBUG_OUTPUT
 }
+
+BUILD_PATH = $$OUT_PWD/$$DESTDIR/..
 
 HEADERS += \
     ../../includes/AbstractReportPlugin.h \

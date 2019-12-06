@@ -25,8 +25,7 @@ SOURCES += main.cpp \
     Listener.cpp \
     MainWindow.cpp
 
-LIBS += \
-		$$PRJPATH/lib/libpgredrv.a
+LIBS += -L$$BUILD_PATH -lpgredrv
 
 HEADERS += \
     Schedule.h \

@@ -5,6 +5,7 @@
 #include <QTextEncoder>
 #include <QDateTime>
 #include <QThread>
+#include <QDebug>
 
 #ifndef ENERGO_LOG_FILE
 #define ENERGO_LOG_FILE

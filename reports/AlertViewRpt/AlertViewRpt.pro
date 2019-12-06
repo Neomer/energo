@@ -31,6 +31,5 @@ FORMS += \
 RESOURCES += \
     resources.qrc
 
-LIBS +=  \
-		$$PRJPATH/lib/libpgredrv.a \
-		$$PRJPATH/lib/libreportengine.a
+LIBS +=  -L$$BUILD_PATH -lpgredrv \
+         -L$$BUILD_PATH -lreportengine

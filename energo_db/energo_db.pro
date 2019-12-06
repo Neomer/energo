@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 include(../path.build)
+include(../pg.build)
 
 QT       += core gui
 
@@ -20,6 +21,6 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
-LIBS += $$PRJPATH/lib/libpgredrv.a
+LIBS += -L$$BUILD_PATH -lpgredrv
 DEFINES += ENERGO_NO_DEBUG
 

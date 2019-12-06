@@ -28,9 +28,8 @@ FORMS    += \
 	mainwindow.ui \
     loginform.ui 
 
-LIBS +=  \
-	$$PRJPATH/lib/libpgredrv.a \
-	$$PRJPATH/lib/libreportengine.a
+LIBS += -L$$BUILD_PATH -lpgredrv \
+        -L$$BUILD_PATH -lreportengine
 		
 
 RESOURCES += \

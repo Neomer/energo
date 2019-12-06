@@ -8,19 +8,24 @@ CONFIG(debug, debug|release)
 {
 	DESTDIR = ../build/debug
 	DEFINES -= QT_NO_DEBUG_OUTPUT
-} ELSE {
+}
+
+CONFIG(release, debug|release)
+{
 	DESTDIR = ../build/release
 	DEFINES *= QT_NO_DEBUG_OUTPUT
 }
+BUILD_PATH = $$OUT_PWD/$$DESTDIR
 
 HEADERS += \
     ../includes/logs.h \
-	../includes/global.h \
-	../includes/object_desc.h \
-	../includes/dbconf.h \
+    ../includes/global.h \
+    ../includes/object_desc.h \
+    ../includes/dbconf.h \
     ../includes/struct_desc.h \ 
     ../includes/AbstractReportPlugin.h \
     ../includes/modbus.h \
     ../includes/Alerts.h
+
 
 

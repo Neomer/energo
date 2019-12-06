@@ -7,25 +7,25 @@ INCLUDE = 0
 SUBDIRS += conf \
     report \
     ReportEngine \
-	Reports \
+    Reports \
     pgredrv \
     scheduler \
-    updater_srv \
-    updater \
+    #updater_srv \
+    #updater \
     #siconC10v2 \
     #merc320 \
-    acdrv \
+    #acdrv \
     qextserialport \
-    oradrv \
-    pgtest2 \
+    #oradrv \
+    #pgtest2 \
     #DataServer \
     #datasrvdrv \
     #pmddrv
-    xmlimport \
-    planning \
-    sceditor \
-    time \
-    energomera \
+    #xmlimport \
+    #planning \
+    #sceditor \
+    #time \
+    #energomera \
     energo_db
 
 OTHER_FILES = TODO

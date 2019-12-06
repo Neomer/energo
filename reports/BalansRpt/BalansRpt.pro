@@ -15,12 +15,14 @@ UI_SOURCES_DIR = $$PRJPATH/reports/$$TARGET
 UI_DIR = $$PRJPATH/reports/$$TARGET
 
 
-CONFIG(debug, debug|release) 
+CONFIG(debug, debug|release)
 {
 	DESTDIR = ../../build/debug/reports
 	DEFINES -= QT_NO_DEBUG_OUTPUT
-} ELSE {
-	DESTDIR = ../../build/release/reports
+}
+CONFIG(release, debug|release)
+{
+        DESTDIR = ../../build/release/reports
 	DEFINES *= QT_NO_DEBUG_OUTPUT
 }
 
@@ -36,9 +38,8 @@ SOURCES += balansrpt.cpp
 HEADERS += balansrpt.h\
         BalansRpt_global.h
 
-LIBS +=  \
-		$$PRJPATH/lib/libpgredrv.a \
-		$$PRJPATH/lib/libreportengine.a
+LIBS +=  -L$$BUILD_PATH -lpgredrv \
+         -L$$BUILD_PATH -lreportengine
 
 FORMS += \
     balansrptform.ui

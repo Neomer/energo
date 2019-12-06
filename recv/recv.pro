@@ -23,13 +23,13 @@ SOURCES += main.cpp \
 HEADERS += connection.h \ 
 		../includes/Alerts.h
 
-LIBS += $$PRJPATH/lib/libpgredrv.a
+LIBS += -L$$BUILD_PATH -lpgredrv
 
 CONFIG(debug, debug|release) {
-	LIBS  += $$PRJPATH/lib/qextserialportd1.dll
-} 
-ELSE {
-	LIBS  += $$PRJPATH/lib/qextserialport1.dll
+        LIBS  += -L$$BUILD_PATH -lqextserialportd1
+}
+CONFIG(release, debug|release) {
+        LIBS  += -L$$BUILD_PATH -lqextserialport1
 }
 		
 DEFINES += ENERGO_NO_DEBUG

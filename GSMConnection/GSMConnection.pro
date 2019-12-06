@@ -21,10 +21,10 @@ HEADERS += GSMConnection.h \
 
 
 CONFIG(debug, debug|release) {
-	LIBS  += $$PRJPATH/lib/qextserialportd1.dll
+        LIBS  += -L$$BUILD_PATH -lqextserialportd1
 } 
-ELSE {
-	LIBS  += $$PRJPATH/lib/qextserialport1.dll
+CONFIG(release, debug|release) {
+        LIBS  += -L$$BUILD_PATH -lqextserialport1
 }
 		
 INCLUDEPATH += $$PRJPATH/includes
